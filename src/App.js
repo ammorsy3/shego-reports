@@ -118,6 +118,7 @@ const calcTotals = () => {
 const totals = calcTotals();
 const fmt = (n) => n.toLocaleString('en-US', { maximumFractionDigits: 2 });
 const fmtSAR = (n) => `${fmt(n)} SAR`;
+const safeDivide = (numerator, denominator) => denominator > 0 ? numerator / denominator : 0;
 
 // Header
 const Header = () => (
@@ -156,9 +157,9 @@ const ExecutiveSummary = () => (
     <h2 className="section-title">Executive Summary</h2>
     <div className="summary-grid">
       <SummaryCard title="Total Ad Spend" value={fmtSAR(totals.overall.spend)} icon="💰" color="purple" />
-      <SummaryCard title="Total App Downloads" value={fmt(totals.overall.installs)} subtitle={`Avg CPI: ${fmtSAR(totals.overall.spend / totals.overall.installs)}`} icon="📱" color="blue" />
-      <SummaryCard title="Captain Leads" value={fmt(totals.captains.leads)} subtitle={`Avg CPL: ${fmtSAR((totals.captains.snapchat.spend + totals.captains.tiktok.spend) / totals.captains.leads)}`} icon="👩‍✈️" color="green" />
-      <SummaryCard title="Captain Installs" value={fmt(totals.captains.installs)} subtitle={`CPI: ${fmtSAR(totals.captains.meta.spend / totals.captains.installs)}`} icon="🚗" color="orange" />
+      <SummaryCard title="Total App Downloads" value={fmt(totals.overall.installs)} subtitle={`Avg CPI: ${fmtSAR(safeDivide(totals.overall.spend, totals.overall.installs))}`} icon="📱" color="blue" />
+      <SummaryCard title="Captain Leads" value={fmt(totals.captains.leads)} subtitle={`Avg CPL: ${fmtSAR(safeDivide(totals.captains.snapchat.spend + totals.captains.tiktok.spend, totals.captains.leads))}`} icon="👩‍✈️" color="green" />
+      <SummaryCard title="Captain Installs" value={fmt(totals.captains.installs)} subtitle={`CPI: ${fmtSAR(safeDivide(totals.captains.meta.spend, totals.captains.installs))}`} icon="🚗" color="orange" />
     </div>
   </section>
 );
@@ -174,7 +175,7 @@ const AudienceBreakdown = () => (
           <div className="stat"><span className="label">Total Spend</span><span className="value">{fmtSAR(totals.captains.spend)}</span></div>
           <div className="stat"><span className="label">App Installs</span><span className="value">{totals.captains.installs}</span></div>
           <div className="stat"><span className="label">Leads</span><span className="value">{totals.captains.leads}</span></div>
-          <div className="stat highlight"><span className="label">Cost per Lead</span><span className="value">{fmtSAR((totals.captains.snapchat.spend + totals.captains.tiktok.spend) / totals.captains.leads)}</span></div>
+          <div className="stat highlight"><span className="label">Cost per Lead</span><span className="value">{fmtSAR(safeDivide(totals.captains.snapchat.spend + totals.captains.tiktok.spend, totals.captains.leads))}</span></div>
         </div>
       </div>
       <div className="audience-card glass users">
@@ -182,7 +183,7 @@ const AudienceBreakdown = () => (
         <div className="audience-stats">
           <div className="stat"><span className="label">Total Spend</span><span className="value">{fmtSAR(totals.users.spend)}</span></div>
           <div className="stat"><span className="label">App Installs</span><span className="value">{totals.users.installs}</span></div>
-          <div className="stat highlight"><span className="label">Cost per Install</span><span className="value">{fmtSAR(totals.users.spend / totals.users.installs)}</span></div>
+          <div className="stat highlight"><span className="label">Cost per Install</span><span className="value">{fmtSAR(safeDivide(totals.users.spend, totals.users.installs))}</span></div>
           <div className="stat"><span className="label">Platforms</span><span className="value">3</span></div>
         </div>
       </div>
@@ -283,7 +284,7 @@ const FinalSummary = () => (
       </div>
       <div className="bottom-line">
         <h3>The Bottom Line</h3>
-        <p>This week, <strong>{fmtSAR(totals.overall.spend)}</strong> was invested resulting in <strong>{totals.overall.installs} downloads</strong> and <strong>{totals.overall.leads} captain leads</strong>. Average CPI: <strong>{fmtSAR(totals.overall.spend / totals.overall.installs)}</strong>.</p>
+        <p>This week, <strong>{fmtSAR(totals.overall.spend)}</strong> was invested resulting in <strong>{totals.overall.installs} downloads</strong> and <strong>{totals.overall.leads} captain leads</strong>. Average CPI: <strong>{fmtSAR(safeDivide(totals.overall.spend, totals.overall.installs))}</strong>.</p>
       </div>
     </div>
   </section>

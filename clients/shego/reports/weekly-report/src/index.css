@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --shego-purple: #8b37f1;
+  --shego-purple-dark: #6b21a8;
+  --shego-purple-light: #a855f7;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #1a0a2e 0%, #16082a 50%, #0f051d 100%);
+  min-height: 100vh;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a0a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--shego-purple);
+  border-radius: 4px;
+}
