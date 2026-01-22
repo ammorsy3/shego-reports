@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap');
+
+/* Shego Brand Colors */
+:root {
+  --shego-purple: #8b37f1;
+  --shego-purple-dark: #6b21a8;
+  --shego-purple-light: #a855f7;
+  --shego-gradient-start: #9333ea;
+  --shego-gradient-end: #7c3aed;
+  --shego-pink: #ec4899;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Tajawal', sans-serif;
+  background: linear-gradient(135deg, #1a0a2e 0%, #16082a 50%, #0f051d 100%);
+  min-height: 100vh;
+  color: white;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a0a2e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--shego-purple);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--shego-purple-light);
+}
