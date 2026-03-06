@@ -30,7 +30,7 @@
 .cursor-dot.visible, .cursor-ring.visible { opacity: 1; }
 .cursor-ring.pointer { width: 60px; height: 60px; border-color: #a855f7; background: rgba(168, 85, 247, 0.1); }
 
-.App, .App * { cursor: none; }
+*, *::before, *::after { cursor: none !important; }
 
 /* Layout */
 .App { min-height: 100vh; position: relative; }
@@ -225,6 +225,53 @@
 .footer-logo { width: 40px; height: 40px; border-radius: 10px; }
 .footer-brand { font-weight: 700; font-size: 1.125rem; color: white; }
 .powered { color: #a855f7; font-weight: 500; font-size: 0.875rem; margin-top: 0.5rem; }
+
+/* Logout */
+.logout-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1000;
+  padding: 0.5rem 1.1rem;
+  background: rgba(139, 55, 241, 0.12);
+  border: 1px solid rgba(139, 55, 241, 0.3);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.logout-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.home-btn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 7rem;
+  z-index: 1000;
+  padding: 0.5rem 1.1rem;
+  background: rgba(139, 55, 241, 0.12);
+  border: 1px solid rgba(139, 55, 241, 0.3);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.home-btn:hover {
+  background: rgba(139, 55, 241, 0.22);
+  border-color: rgba(139, 55, 241, 0.5);
+  color: #a855f7;
+}
 
 /* Responsive */
 @media (max-width: 768px) {
