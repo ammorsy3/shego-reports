@@ -171,7 +171,12 @@ const PlatformComparison = () => {
 };
 
 // ─── Platform Detail Cards ────────────────────────────────────────────────────
-const PlatformCard = ({ platform, data, logo, label }) => (
+const PlatformCard = ({ platform, data, logo, label }) => {
+  const totals = data.campaigns.reduce(
+    (acc, c) => ({ spend: acc.spend + c.spend, revenue: acc.revenue + c.revenue, orders: acc.orders + c.orders }),
+    { spend: 0, revenue: 0, orders: 0 }
+  );
+  return (
   <div className={`ombdr-platform-card ombdr-glass ${platform}`}>
     <div className="ombdr-platform-header">
       <div className="ombdr-platform-icon">{logo}</div>
@@ -200,11 +205,21 @@ const PlatformCard = ({ platform, data, logo, label }) => (
               </tr>
             ))}
           </tbody>
+          <tfoot>
+            <tr className="ombdr-table-total">
+              <td>Total</td>
+              <td>{fmtSAR(totals.spend)}</td>
+              <td>{fmtSAR(totals.revenue)}</td>
+              <td>{fmt(safeDivide(totals.revenue, totals.spend))}x</td>
+              <td>{totals.orders}</td>
+            </tr>
+          </tfoot>
         </table>
       </div>
     </div>
   </div>
-);
+  );
+};
 
 const PlatformBreakdown = () => (
   <section className="ombdr-section">

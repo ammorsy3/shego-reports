@@ -195,6 +195,9 @@ body.ombdr-theme .cursor-ring.pointer {
 .ombdr-campaign-group td { padding: 0.75rem; border-bottom: 1px solid rgba(240, 42, 54, 0.08); color: white; font-size: 0.8rem; }
 .ombdr-campaign-group tr:last-child td { border-bottom: none; }
 .ombdr-campaign-group tr:hover td { background: rgba(240, 42, 54, 0.05); }
+.ombdr-table-total td { border-top: 1px solid rgba(240, 42, 54, 0.35) !important; border-bottom: none !important; background: rgba(240, 42, 54, 0.1); font-weight: 700; color: #ff6b75 !important; font-size: 0.82rem; }
+.ombdr-table-total td:first-child { border-radius: 0 0 0 8px; }
+.ombdr-table-total td:last-child  { border-radius: 0 0 8px 0; }
 
 /* Insights */
 .ombdr-insights-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
