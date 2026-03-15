@@ -44,13 +44,18 @@ const allWeeksData = [
       ],
     },
     tiktok: {
-      campaigns: [],
+      campaigns: [
+        { name: 'UGC',                  spend: 237.37, revenue: 1523.00, roas: 6.42, orders: 17 },
+        { name: 'Om Bader Teaser 8:13', spend: 366.97, revenue: 1446.00, roas: 3.94, orders: 14 },
+        { name: 'Om Bader Teaser 2:7',  spend: 28.44,  revenue: 79.00,   roas: 2.78, orders: 1  },
+        { name: 'Om Bader Teaser',      spend: 389.49, revenue: 2435.00, roas: 6.25, orders: 28 },
+      ],
     },
     insights: [
       { type: 'success', icon: '✅', title: 'Best Performing Platform', text: 'Snapchat dominated this week — OM Bader Teaser generated 53,636 SAR revenue at 5.33x ROAS with 540 orders on a 10,063 SAR spend.' },
       { type: 'success', icon: '✅', title: 'Top ROAS Campaign',        text: 'OM Bader Teaser 8:13 on Snapchat hit 9.04x ROAS — the highest individual ROAS this week — with 49 orders from only 572 SAR spend.' },
       { type: 'warning', icon: '⚠️', title: 'Needs Attention',          text: 'UGC KFC on Snapchat delivered only 1.78x ROAS, well below the account average. Consider pausing or refreshing this creative.' },
-      { type: 'info',    icon: '💡', title: 'Recommendation',           text: 'TikTok data pending for this period. Scale OM Bader Teaser on Snapchat further and test its proven creative angles on Meta and TikTok.' },
+      { type: 'info',    icon: '💡', title: 'Recommendation',           text: 'Scale OM Bader Teaser on Snapchat further — it\'s the strongest campaign across both weeks. UGC is also consistently profitable on TikTok at 6.42x.' },
     ],
   },
   {
@@ -75,9 +80,9 @@ const allWeeksData = [
     tiktok: {
       campaigns: [
         { name: 'UGC',                  spend: 237.37, revenue: 1523.00, roas: 6.42, orders: 17 },
-        { name: 'Om Bader Teaser 8:13', spend: 366.97, revenue: 1446.00, roas: 3.94, orders: 14 },
-        { name: 'Om Bader Teaser 2:7',  spend: 28.44,  revenue: 79.00,   roas: 2.78, orders: 1  },
-        { name: 'Om Bader Teaser',      spend: 389.49, revenue: 2435.00, roas: 6.25, orders: 28 },
+        { name: 'Om Bader Teaser 8:13', spend: 366.97, revenue: 1288.00, roas: 3.51, orders: 12 },
+        { name: 'Om Bader Teaser 2:7',  spend: 28.44,  revenue: 0,       roas: 0,    orders: 0  },
+        { name: 'Om Bader Teaser',      spend: 389.49, revenue: 2317.00, roas: 5.95, orders: 26 },
       ],
     },
     insights: [
