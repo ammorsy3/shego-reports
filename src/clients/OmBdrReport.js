@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './OmBdr.css';
 import ombdrLogo from './ombdr-logo.webp';
 
@@ -21,64 +21,103 @@ const TikTokLogo = () => (
   </svg>
 );
 
-// ─── Placeholder Campaign Data ────────────────────────────────────────────────
-// All monetary values in SAR. Replace with real data each week.
-const campaignData = {
-  reportPeriod: 'Feb 26 – Mar 5, 2026',
-  meta: {
-    // Source values in USD × 3.75 = SAR
-    campaigns: [
-      { name: 'Om Bader Teaser',  spend: 3599.70,  revenue: 18118.19, roas: 5.03, orders: 178 },
-      { name: 'UGC 1',            spend: 1266.79,  revenue: 4218.30,  roas: 3.33, orders: 43  },
-      { name: 'UGC 2',            spend: 1071.11,  revenue: 3443.78,  roas: 3.22, orders: 41  },
-      { name: 'UGC 3',            spend: 1560.45,  revenue: 8190.53,  roas: 5.25, orders: 93  },
+// ─── All Weekly Data ──────────────────────────────────────────────────────────
+// Most recent week first. Meta values converted from USD × 3.75 = SAR.
+const allWeeksData = [
+  {
+    reportPeriod: 'Mar 5 – Mar 12, 2026',
+    label: 'Week 2',
+    meta: {
+      campaigns: [
+        { name: 'Om Bader Teaser', spend: 3797.14, revenue: 16202.70, roas: 4.27, orders: 166 },
+        { name: 'UGC 1',          spend: 1152.26, revenue: 5720.44,  roas: 4.96, orders: 60  },
+        { name: 'UGC 2',          spend: 1300.50, revenue: 5318.44,  roas: 4.09, orders: 52  },
+        { name: 'UGC 3',          spend: 3098.14, revenue: 12464.85, roas: 4.02, orders: 134 },
+      ],
+    },
+    snapchat: {
+      campaigns: [
+        { name: 'UGC KFC',              spend: 399.14,   revenue: 710.47,   roas: 1.78, orders: 8   },
+        { name: 'OM Bader Teaser',      spend: 10063.02, revenue: 53635.90, roas: 5.33, orders: 540 },
+        { name: 'OM Bader Teaser 8:13', spend: 572.06,   revenue: 5171.42,  roas: 9.04, orders: 49  },
+        { name: 'UGC',                  spend: 7903.05,  revenue: 44731.26, roas: 5.66, orders: 438 },
+      ],
+    },
+    tiktok: {
+      campaigns: [],
+    },
+    insights: [
+      { type: 'success', icon: '✅', title: 'Best Performing Platform', text: 'Snapchat dominated this week — OM Bader Teaser generated 53,636 SAR revenue at 5.33x ROAS with 540 orders on a 10,063 SAR spend.' },
+      { type: 'success', icon: '✅', title: 'Top ROAS Campaign',        text: 'OM Bader Teaser 8:13 on Snapchat hit 9.04x ROAS — the highest individual ROAS this week — with 49 orders from only 572 SAR spend.' },
+      { type: 'warning', icon: '⚠️', title: 'Needs Attention',          text: 'UGC KFC on Snapchat delivered only 1.78x ROAS, well below the account average. Consider pausing or refreshing this creative.' },
+      { type: 'info',    icon: '💡', title: 'Recommendation',           text: 'TikTok data pending for this period. Scale OM Bader Teaser on Snapchat further and test its proven creative angles on Meta and TikTok.' },
     ],
   },
-  snapchat: {
-    campaigns: [
-      { name: 'OM Bader Teaser 2:7',  spend: 346.60,  revenue: 949.00,   roas: 2.74, orders: 11  },
-      { name: 'OM Bader Teaser',      spend: 3508.29, revenue: 24840.97, roas: 7.08, orders: 252 },
-      { name: 'OM Bader Teaser 8:13', spend: 1103.40, revenue: 5690.00,  roas: 5.16, orders: 58  },
-      { name: 'UGC',                  spend: 1914.03, revenue: 14027.03, roas: 7.33, orders: 143 },
+  {
+    reportPeriod: 'Feb 26 – Mar 5, 2026',
+    label: 'Week 1',
+    meta: {
+      campaigns: [
+        { name: 'Om Bader Teaser', spend: 3599.70, revenue: 18118.19, roas: 5.03, orders: 178 },
+        { name: 'UGC 1',          spend: 1266.79, revenue: 4218.30,  roas: 3.33, orders: 43  },
+        { name: 'UGC 2',          spend: 1071.11, revenue: 3443.78,  roas: 3.22, orders: 41  },
+        { name: 'UGC 3',          spend: 1560.45, revenue: 8190.53,  roas: 5.25, orders: 93  },
+      ],
+    },
+    snapchat: {
+      campaigns: [
+        { name: 'OM Bader Teaser 2:7',  spend: 346.60,  revenue: 949.00,   roas: 2.74, orders: 11  },
+        { name: 'OM Bader Teaser',      spend: 3508.29, revenue: 24840.97, roas: 7.08, orders: 252 },
+        { name: 'OM Bader Teaser 8:13', spend: 1103.40, revenue: 5690.00,  roas: 5.16, orders: 58  },
+        { name: 'UGC',                  spend: 1914.03, revenue: 14027.03, roas: 7.33, orders: 143 },
+      ],
+    },
+    tiktok: {
+      campaigns: [
+        { name: 'UGC',                  spend: 237.37, revenue: 1523.00, roas: 6.42, orders: 17 },
+        { name: 'Om Bader Teaser 8:13', spend: 366.97, revenue: 1446.00, roas: 3.94, orders: 14 },
+        { name: 'Om Bader Teaser 2:7',  spend: 28.44,  revenue: 79.00,   roas: 2.78, orders: 1  },
+        { name: 'Om Bader Teaser',      spend: 389.49, revenue: 2435.00, roas: 6.25, orders: 28 },
+      ],
+    },
+    insights: [
+      { type: 'success', icon: '✅', title: 'Best Performing Platform', text: 'Meta led the week with strong ROAS across all creatives — Om Bader Teaser hit 5.03x and UGC 3 hit 5.25x on a combined 7,498 SAR spend.' },
+      { type: 'success', icon: '✅', title: 'Top Campaign',             text: 'OM Bader Teaser on Snapchat delivered the best individual result: 7.08x ROAS, 252 orders, and 24,841 SAR in revenue from 3,508 SAR spend.' },
+      { type: 'warning', icon: '⚠️', title: 'Needs Attention',          text: 'Om Bader Teaser 2:7 on TikTok generated only 1 conversion on 28.44 SAR spend — consider retiring or refreshing this creative.' },
+      { type: 'info',    icon: '💡', title: 'Recommendation',           text: 'UGC creatives are performing consistently across all platforms (Meta 3–5x, Snapchat 7.33x, TikTok 6.42x). Increase UGC budget allocation, especially on Snapchat.' },
     ],
   },
-  tiktok: {
-    campaigns: [
-      { name: 'UGC',                     spend: 237.37, revenue: 1523.00, roas: 6.42, orders: 17 },
-      { name: 'Om Bader Teaser 8:13',    spend: 366.97, revenue: 1288.00, roas: 3.51, orders: 12 },
-      { name: 'Om Bader Teaser 2:7',     spend: 28.44,  revenue: 0,       roas: 0,    orders: 0  },
-      { name: 'Om Bader Teaser',         spend: 389.49, revenue: 2317.00, roas: 5.95, orders: 26 },
-    ],
-  },
-};
+];
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-const fmt  = (n) => n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+const fmt    = (n) => n.toLocaleString('en-US', { maximumFractionDigits: 2 });
 const fmtSAR = (n) => `${fmt(n)} SAR`;
 const safeDivide = (a, b) => (b > 0 ? a / b : 0);
 
-const platformTotals = (platform) =>
-  campaignData[platform].campaigns.reduce(
-    (acc, c) => ({
-      spend:   acc.spend   + c.spend,
-      revenue: acc.revenue + c.revenue,
-      orders:  acc.orders  + c.orders,
-    }),
+const sumCampaigns = (campaigns) =>
+  campaigns.reduce(
+    (acc, c) => ({ spend: acc.spend + c.spend, revenue: acc.revenue + c.revenue, orders: acc.orders + c.orders }),
     { spend: 0, revenue: 0, orders: 0 }
   );
 
-const meta     = platformTotals('meta');
-const snapchat = platformTotals('snapchat');
-const tiktok   = platformTotals('tiktok');
-
-const overall = {
-  spend:   meta.spend   + snapchat.spend   + tiktok.spend,
-  revenue: meta.revenue + snapchat.revenue + tiktok.revenue,
-  orders:  meta.orders  + snapchat.orders  + tiktok.orders,
-};
+// ─── Week Selector ────────────────────────────────────────────────────────────
+const WeekSelector = ({ weeks, selectedIndex, onSelect }) => (
+  <div className="ombdr-week-selector">
+    {weeks.map((week, i) => (
+      <button
+        key={i}
+        className={`ombdr-week-btn${i === selectedIndex ? ' active' : ''}`}
+        onClick={() => onSelect(i)}
+      >
+        <span className="ombdr-week-label">{week.label}</span>
+        <span className="ombdr-week-period">{week.reportPeriod}</span>
+      </button>
+    ))}
+  </div>
+);
 
 // ─── Header ───────────────────────────────────────────────────────────────────
-const Header = () => (
+const Header = ({ reportPeriod }) => (
   <header className="ombdr-header">
     <div className="ombdr-header-content">
       <div className="ombdr-logo-section">
@@ -87,7 +126,7 @@ const Header = () => (
       </div>
       <div className="ombdr-report-info">
         <h1>Weekly Performance Report</h1>
-        <p className="ombdr-date-range">{campaignData.reportPeriod}</p>
+        <p className="ombdr-date-range">{reportPeriod}</p>
       </div>
     </div>
   </header>
@@ -106,7 +145,7 @@ const SummaryCard = ({ title, value, subtitle, icon, color }) => (
 );
 
 // ─── Executive Summary ────────────────────────────────────────────────────────
-const ExecutiveSummary = () => (
+const ExecutiveSummary = ({ overall }) => (
   <section className="ombdr-section">
     <h2 className="ombdr-section-title">Executive Summary</h2>
     <div className="ombdr-summary-grid">
@@ -138,7 +177,7 @@ const ExecutiveSummary = () => (
 );
 
 // ─── Platform Comparison Bar Chart ────────────────────────────────────────────
-const PlatformComparison = () => {
+const PlatformComparison = ({ meta, snapchat, tiktok }) => {
   const platforms = [
     { name: 'Meta',     data: meta,     color: '#1877f2', logo: <MetaLogo /> },
     { name: 'Snapchat', data: snapchat, color: '#FFFC00', logo: <SnapchatLogo /> },
@@ -162,7 +201,9 @@ const PlatformComparison = () => {
                 style={{ width: `${(p.data.spend / maxSpend) * 100}%`, background: p.color }}
               />
             </div>
-            <div className="ombdr-bar-value">{fmtSAR(p.data.spend)}</div>
+            <div className="ombdr-bar-value">
+              {p.data.spend > 0 ? fmtSAR(p.data.spend) : '—'}
+            </div>
           </div>
         ))}
       </div>
@@ -172,173 +213,184 @@ const PlatformComparison = () => {
 
 // ─── Platform Detail Cards ────────────────────────────────────────────────────
 const PlatformCard = ({ platform, data, logo, label }) => {
-  const totals = data.campaigns.reduce(
-    (acc, c) => ({ spend: acc.spend + c.spend, revenue: acc.revenue + c.revenue, orders: acc.orders + c.orders }),
-    { spend: 0, revenue: 0, orders: 0 }
-  );
+  const totals = sumCampaigns(data.campaigns);
+  const hasData = data.campaigns.length > 0;
+
   return (
-  <div className={`ombdr-platform-card ombdr-glass ${platform}`}>
-    <div className="ombdr-platform-header">
-      <div className="ombdr-platform-icon">{logo}</div>
-      <h3>{label}</h3>
-    </div>
-    <div className="ombdr-platform-content">
-      <div className="ombdr-campaign-group">
-        <table>
-          <thead>
-            <tr>
-              <th>Campaign</th>
-              <th>Spend</th>
-              <th>Revenue</th>
-              <th>ROAS</th>
-              <th>Orders</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.campaigns.map((c, i) => (
-              <tr key={i}>
-                <td>{c.name}</td>
-                <td>{fmtSAR(c.spend)}</td>
-                <td>{fmtSAR(c.revenue)}</td>
-                <td>{c.roas > 0 ? `${fmt(c.roas)}x` : '—'}</td>
-                <td>{c.orders}</td>
-              </tr>
-            ))}
-          </tbody>
-          <tfoot>
-            <tr className="ombdr-table-total">
-              <td>Total</td>
-              <td>{fmtSAR(totals.spend)}</td>
-              <td>{fmtSAR(totals.revenue)}</td>
-              <td>{fmt(safeDivide(totals.revenue, totals.spend))}x</td>
-              <td>{totals.orders}</td>
-            </tr>
-          </tfoot>
-        </table>
+    <div className={`ombdr-platform-card ombdr-glass ${platform}`}>
+      <div className="ombdr-platform-header">
+        <div className="ombdr-platform-icon">{logo}</div>
+        <h3>{label}</h3>
+      </div>
+      <div className="ombdr-platform-content">
+        {!hasData ? (
+          <p className="ombdr-no-data">Data not yet available for this period.</p>
+        ) : (
+          <div className="ombdr-campaign-group">
+            <table>
+              <thead>
+                <tr>
+                  <th>Campaign</th>
+                  <th>Spend</th>
+                  <th>Revenue</th>
+                  <th>ROAS</th>
+                  <th>Orders</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.campaigns.map((c, i) => (
+                  <tr key={i}>
+                    <td>{c.name}</td>
+                    <td>{fmtSAR(c.spend)}</td>
+                    <td>{fmtSAR(c.revenue)}</td>
+                    <td>{c.roas > 0 ? `${fmt(c.roas)}x` : '—'}</td>
+                    <td>{c.orders}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                <tr className="ombdr-table-total">
+                  <td>Total</td>
+                  <td>{fmtSAR(totals.spend)}</td>
+                  <td>{fmtSAR(totals.revenue)}</td>
+                  <td>{fmt(safeDivide(totals.revenue, totals.spend))}x</td>
+                  <td>{totals.orders}</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        )}
       </div>
     </div>
-  </div>
   );
 };
 
-const PlatformBreakdown = () => (
+const PlatformBreakdown = ({ weekData }) => (
   <section className="ombdr-section">
     <h2 className="ombdr-section-title">Platform Details</h2>
     <div className="ombdr-platforms-grid">
-      <PlatformCard platform="meta"     data={campaignData.meta}     logo={<MetaLogo />}     label="Meta (Facebook / Instagram)" />
-      <PlatformCard platform="snapchat" data={campaignData.snapchat} logo={<SnapchatLogo />} label="Snapchat" />
-      <PlatformCard platform="tiktok"   data={campaignData.tiktok}   logo={<TikTokLogo />}   label="TikTok" />
+      <PlatformCard platform="meta"     data={weekData.meta}     logo={<MetaLogo />}     label="Meta (Facebook / Instagram)" />
+      <PlatformCard platform="snapchat" data={weekData.snapchat} logo={<SnapchatLogo />} label="Snapchat" />
+      <PlatformCard platform="tiktok"   data={weekData.tiktok}   logo={<TikTokLogo />}   label="TikTok" />
     </div>
   </section>
 );
 
 // ─── Key Insights ─────────────────────────────────────────────────────────────
-const KeyInsights = () => (
+const KeyInsights = ({ insights }) => (
   <section className="ombdr-section">
     <h2 className="ombdr-section-title">Key Insights</h2>
     <div className="ombdr-insights-grid">
-      <div className="ombdr-insight-card ombdr-glass success">
-        <div className="ombdr-insight-icon">✅</div>
-        <h4>Best Performing Platform</h4>
-        <p>Meta led the week with strong ROAS across all creatives — Om Bader Teaser hit 5.03x and UGC 3 hit 5.25x on a combined 7,498 SAR spend.</p>
-      </div>
-      <div className="ombdr-insight-card ombdr-glass success">
-        <div className="ombdr-insight-icon">✅</div>
-        <h4>Top Campaign</h4>
-        <p>OM Bader Teaser on Snapchat delivered the best individual result: 7.08x ROAS, 252 orders, and 24,841 SAR in revenue from 3,508 SAR spend.</p>
-      </div>
-      <div className="ombdr-insight-card ombdr-glass warning">
-        <div className="ombdr-insight-icon">⚠️</div>
-        <h4>Needs Attention</h4>
-        <p>Om Bader Teaser 2:7 on TikTok generated zero conversions on 28.44 SAR spend and is currently paused — consider retiring or refreshing this creative.</p>
-      </div>
-      <div className="ombdr-insight-card ombdr-glass info">
-        <div className="ombdr-insight-icon">💡</div>
-        <h4>Recommendation</h4>
-        <p>UGC creatives are performing consistently across all platforms (Meta 3–5x, Snapchat 7.33x, TikTok 6.42x). Increase UGC budget allocation, especially on Snapchat.</p>
-      </div>
+      {insights.map((insight, i) => (
+        <div key={i} className={`ombdr-insight-card ombdr-glass ${insight.type}`}>
+          <div className="ombdr-insight-icon">{insight.icon}</div>
+          <h4>{insight.title}</h4>
+          <p>{insight.text}</p>
+        </div>
+      ))}
     </div>
   </section>
 );
 
 // ─── Final Summary Table ──────────────────────────────────────────────────────
-const FinalSummary = () => (
-  <section className="ombdr-section">
-    <h2 className="ombdr-section-title">Week at a Glance</h2>
-    <div className="ombdr-final-summary ombdr-glass">
-      <div className="ombdr-summary-table">
-        <div className="ombdr-table-row header">
-          <span>Metric</span><span>Meta</span><span>Snapchat</span><span>TikTok</span>
+const FinalSummary = ({ meta, snapchat, tiktok, overall, reportPeriod }) => {
+  const hasTiktok = tiktok.spend > 0;
+
+  return (
+    <section className="ombdr-section">
+      <h2 className="ombdr-section-title">Week at a Glance</h2>
+      <div className="ombdr-final-summary ombdr-glass">
+        <div className="ombdr-summary-table">
+          <div className="ombdr-table-row header">
+            <span>Metric</span><span>Meta</span><span>Snapchat</span><span>TikTok</span>
+          </div>
+          <div className="ombdr-table-row">
+            <span>Ad Spend</span>
+            <span>{fmtSAR(meta.spend)}</span>
+            <span>{fmtSAR(snapchat.spend)}</span>
+            <span className="hl">{hasTiktok ? fmtSAR(tiktok.spend) : '—'}</span>
+          </div>
+          <div className="ombdr-table-row">
+            <span>Revenue</span>
+            <span>{fmtSAR(meta.revenue)}</span>
+            <span>{fmtSAR(snapchat.revenue)}</span>
+            <span className="hl">{hasTiktok ? fmtSAR(tiktok.revenue) : '—'}</span>
+          </div>
+          <div className="ombdr-table-row">
+            <span>ROAS</span>
+            <span>{fmt(safeDivide(meta.revenue, meta.spend))}x</span>
+            <span>{fmt(safeDivide(snapchat.revenue, snapchat.spend))}x</span>
+            <span className="hl">{hasTiktok ? `${fmt(safeDivide(tiktok.revenue, tiktok.spend))}x` : '—'}</span>
+          </div>
+          <div className="ombdr-table-row">
+            <span>Orders</span>
+            <span>{meta.orders}</span>
+            <span>{snapchat.orders}</span>
+            <span className="hl">{hasTiktok ? tiktok.orders : '—'}</span>
+          </div>
         </div>
-        <div className="ombdr-table-row">
-          <span>Ad Spend</span>
-          <span>{fmtSAR(meta.spend)}</span>
-          <span>{fmtSAR(snapchat.spend)}</span>
-          <span className="hl">{fmtSAR(tiktok.spend)}</span>
-        </div>
-        <div className="ombdr-table-row">
-          <span>Revenue</span>
-          <span>{fmtSAR(meta.revenue)}</span>
-          <span>{fmtSAR(snapchat.revenue)}</span>
-          <span className="hl">{fmtSAR(tiktok.revenue)}</span>
-        </div>
-        <div className="ombdr-table-row">
-          <span>ROAS</span>
-          <span>{fmt(safeDivide(meta.revenue, meta.spend))}x</span>
-          <span>{fmt(safeDivide(snapchat.revenue, snapchat.spend))}x</span>
-          <span className="hl">{fmt(safeDivide(tiktok.revenue, tiktok.spend))}x</span>
-        </div>
-        <div className="ombdr-table-row">
-          <span>Orders</span>
-          <span>{meta.orders}</span>
-          <span>{snapchat.orders}</span>
-          <span className="hl">{tiktok.orders}</span>
+        <div className="ombdr-bottom-line">
+          <h3>The Bottom Line</h3>
+          <p>
+            This week, <strong>{fmtSAR(overall.spend)}</strong> was invested across all platforms,
+            generating <strong>{fmtSAR(overall.revenue)}</strong> in revenue
+            with <strong>{overall.orders} orders</strong>.
+            Overall ROAS: <strong>{fmt(safeDivide(overall.revenue, overall.spend))}x</strong>.
+          </p>
         </div>
       </div>
-      <div className="ombdr-bottom-line">
-        <h3>The Bottom Line</h3>
-        <p>
-          This week, <strong>{fmtSAR(overall.spend)}</strong> was invested across all platforms,
-          generating <strong>{fmtSAR(overall.revenue)}</strong> in revenue
-          with <strong>{overall.orders} orders</strong>.
-          Overall ROAS: <strong>{fmt(safeDivide(overall.revenue, overall.spend))}x</strong>.
-        </p>
-      </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
-const Footer = () => (
+const Footer = ({ reportPeriod }) => (
   <footer className="ombdr-footer">
     <div style={{ marginBottom: '0.5rem' }}>
       <span className="ombdr-footer-brand">أم بدر · OmBdr</span>
     </div>
-    <p>Weekly Report | {campaignData.reportPeriod}</p>
+    <p>Weekly Report | {reportPeriod}</p>
     <p className="powered">Prepared by SEET Marketing Solutions</p>
   </footer>
 );
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 function OmBdrReport() {
+  const [weekIndex, setWeekIndex] = useState(0);
+
   useEffect(() => {
     document.body.classList.add('ombdr-theme');
     return () => document.body.classList.remove('ombdr-theme');
   }, []);
 
+  const weekData = allWeeksData[weekIndex];
+
+  const meta     = sumCampaigns(weekData.meta.campaigns);
+  const snapchat = sumCampaigns(weekData.snapchat.campaigns);
+  const tiktok   = sumCampaigns(weekData.tiktok.campaigns);
+  const overall  = {
+    spend:   meta.spend   + snapchat.spend   + tiktok.spend,
+    revenue: meta.revenue + snapchat.revenue + tiktok.revenue,
+    orders:  meta.orders  + snapchat.orders  + tiktok.orders,
+  };
+
   return (
     <div className="ombdr-app">
       <div className="ombdr-bg-1" />
       <div className="ombdr-bg-2" />
-      <Header />
+      <Header reportPeriod={weekData.reportPeriod} />
+      <WeekSelector weeks={allWeeksData} selectedIndex={weekIndex} onSelect={setWeekIndex} />
       <main className="ombdr-main">
-        <ExecutiveSummary />
-        <PlatformComparison />
-        <PlatformBreakdown />
-        <KeyInsights />
-        <FinalSummary />
+        <ExecutiveSummary overall={overall} />
+        <PlatformComparison meta={meta} snapchat={snapchat} tiktok={tiktok} />
+        <PlatformBreakdown weekData={weekData} />
+        <KeyInsights insights={weekData.insights} />
+        <FinalSummary
+          meta={meta} snapchat={snapchat} tiktok={tiktok} overall={overall}
+          reportPeriod={weekData.reportPeriod}
+        />
       </main>
-      <Footer />
+      <Footer reportPeriod={weekData.reportPeriod} />
     </div>
   );
 }
